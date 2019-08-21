@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //ISO18000-6C CMD
 0x01	Inventory
 0x02	Read Data
@@ -67,4 +68,75 @@
 0xFC	Tag Return Error Code
 0xFD	Command Length Wrong
 0xFE	Illegal Command
+=======
+//ISO18000-6C CMD
+0x01	Inventory
+0x02	Read Data
+0x03	Write Data
+0x04	Write EPC
+0x05	Kill Tag
+0x06	Lock
+0x07	Block Erase
+0x08	Read Protect
+0x09	Read Protect Without EPC
+0x0A	Reset Read Protect
+0x0B	Check Read Protect
+0x0C	EAS Alarm
+0x0D	Check EAS Alarm
+0x0E	Block Lock
+0x0F	Inventory　Single
+0x01	Block Write
+//ISO18000-6B CMD
+0x50	Inventory Single 6B
+0x51	Inventory Multiple 6B
+0x52	Read Data 6B
+0x53	Write Data 6B
+0x54	Check Lock 6B
+0x55	Lock 6B
+//Reader Defined CMD
+0x21	Get Reader Information 
+0x22	Set Region
+0x24	Set Address
+0x25	Set ScanTime
+0x28	Set Baud Rate
+0x2F	Set Power
+0x33	Acousto-optic Control
+0x34	Set Wiegand
+0x35	Set WorkMode
+0x36	Get WorkMode
+0x37	Set EAS Accuracy
+0x38	Syris Response Offset
+0x3B	Trigger Offset
+
+////
+//Recmd Status
+0x00	Success
+0x01	Return Before Inventory Finished
+0x02	The Inventory-scan-time Overflow
+0x03	More Data
+0x04	Reader Module Flash Is Full
+0x05	Access Password Error
+0x09	Kill Tag Error
+0x0A	Kill Password Error Can't Be Zero
+0x0B	Tag Not Support The Command
+0x0C	Use The Command, Access Password Can't Be Zero
+0x0D	Tag Is Protected, Cannot Set It Again
+0x0E	Tag Is Unprotected, No Need To Reset It
+0x10	There Is Some Locked Bytes, Write Fail
+0x11	Can Not Lock It
+0x12	Be Locked, Cannot Lock It Again
+0x13	Save Fail, Can Use Before Power
+0x14	Cannot Adjust
+0x15	Return Before Inventory Finished
+0x16	Inventory-Scan-Time Overflow
+0x17	More Data
+0x18	Reader Module Flash Is Full
+0x19	Not Support Command Or Access Password
+0xF9	Command Execute Error
+0xFA	Get Tag, Poor Communication, Inoperable
+0xFB	No Tag Operable
+0xFC	Tag Return Error Code
+0xFD	Command Length Wrong
+0xFE	Illegal Command
+>>>>>>> 8/22
 0xFF	Parameter Error
