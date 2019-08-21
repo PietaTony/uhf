@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-package UHFRFID
-=======
 package UHFRFID
 
 import "errors"
@@ -66,4 +63,3 @@ func (m *Res)GetString()(string){
 	s += "\tAll:\t" + GetStr(m.GetBytes()) + "\n"
 	return s
 }
->>>>>>> 8/22
