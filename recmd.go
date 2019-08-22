@@ -1,9 +1,7 @@
 package UHFRFID
 
 const recmdMinSize = 5
-const (
-	NoTagOperable 							=	0xFB
-)
+
 func getStatusStr(status uint8) (string) {
 	switch status{
 	//Res Status

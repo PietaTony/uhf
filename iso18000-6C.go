@@ -11,7 +11,7 @@ func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory){
 	data := []uint8{spec.Adr, TID.Len}
 	send(Req{adr: adr, cmd: inventory, data: data,})
 	res := recv()
-	if res.status == NoTagOperable {
+	if res.len == recmdMinSize {
 		var EPSs []Memory
 		return res, EPSs
 	}
@@ -37,7 +37,7 @@ func InventoryAll(adr uint8) (Res, []Memory){
 	data := []uint8{}
 	send(Req{adr: adr, cmd: inventory, data: data,})
 	res := recv()
-	if res.status == NoTagOperable {
+	if res.len == recmdMinSize {
 		var EPSs []Memory
 		return res, EPSs
 	}
