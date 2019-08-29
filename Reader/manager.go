@@ -2,10 +2,11 @@ package UHFRFID
 
 import (
 	"fmt"
-	"github.com/jacobsa/go-serial/serial"
-	"github.com/sigurn/crc16"
 	"io"
 	"log"
+
+	"github.com/jacobsa/go-serial/serial"
+	"github.com/sigurn/crc16"
 )
 
 var Options serial.OpenOptions
