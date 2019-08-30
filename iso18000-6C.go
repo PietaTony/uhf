@@ -1,7 +1,6 @@
-package UHFRFID
+package reader
 
-/*Inventory
-The command function is used to inventory tags in the effective field and get their EPC or TID values. The reader executes an Inventory command and gets tag’s EPC before any other operation.
+/*Inventory The command function is used to inventory tags in the effective field and get their EPC or TID values. The reader executes an Inventory command and gets tag’s EPC before any other operation.
 The user may accord need to establish this command the first biggest running time (Inventory scan time), before the command enquires. The reader completes command execution in inventory ScanTime (not including host sending data time) except inventory command after receiving host command and returns the results.
 The default value is 0x0A (corresponding to 10*100ms=1s).
 The value range is 0x03~0xFF (corresponding to 3*100ms~255*100ms). In various environments, the actual inventory scan time may be 0~75ms longer than the InventoryScanTime defined.
@@ -33,6 +32,8 @@ func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory) {
 
 	return res, EPCs
 }
+
+//InventoryAll The command function inventory to get their EPC or TID values. The reader executes an Inventory command and gets all tag’s EPC before any other operation.
 func InventoryAll(adr uint8) (Res, []Memory) {
 	data := []uint8{}
 	send(Req{adr: adr, cmd: inventory, data: data})
@@ -60,10 +61,7 @@ func InventoryAll(adr uint8) (Res, []Memory) {
 	return res, EPCs
 }
 
-/*ReadData
-The command is used to read part or all of a Tag’s Password, EPC, TID, or User memory.
-To the word as a unit, start to read data from the designated address.
-*/
+//ReadData The command is used to read part or all of a Tag’s Password, EPC, TID, or User memory. To the word as a unit, start to read data from the designated address.
 func ReadData(adr uint8, tag Tag, spec Spec, mask Mask) (Res, []uint8) {
 	data := []uint8{tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -75,9 +73,7 @@ func ReadData(adr uint8, tag Tag, spec Spec, mask Mask) (Res, []uint8) {
 	return res, res.Data
 }
 
-/*WriteData
-The command is used to write several words in a Tag’s Reserved, EPC, TID, or User memory.
-*/
+//WriteData The command is used to write several words in a Tag’s Reserved, EPC, TID, or User memory.
 func WriteData(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data := []uint8{spec.Mem.Len, tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -90,10 +86,7 @@ func WriteData(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	return res
 }
 
-/*WriteEPC
-The command is used to write EPC number in a Tag’s EPC memory.
-Random write one tag in the effective field.
-*/
+//WriteEPC The command is used to write EPC number in a Tag’s EPC memory. Random write one tag in the effective field.
 func WriteEPC(adr uint8, pwd []uint8, spec Spec) Res {
 	data := []uint8{spec.Mem.Len}
 	data = append(data, pwd...)
@@ -103,10 +96,7 @@ func WriteEPC(adr uint8, pwd []uint8, spec Spec) Res {
 	return res
 }
 
-/*KillTag
-The command is used to kill tag.
-After the tag killed, it never process command.
-*/
+//KillTag The command is used to kill tag. After the tag killed, it never process command.
 func KillTag(adr uint8, tag Tag, mask Mask) Res {
 	data := []uint8{tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -117,8 +107,7 @@ func KillTag(adr uint8, tag Tag, mask Mask) Res {
 	return res
 }
 
-/*Lock
-The Lock command Lock reversibly or permanently locks a password or an entire EPC, TID, or User memory bank in a readable/writeable or unreadable/unwriteable state.
+/*Lock The Lock command Lock reversibly or permanently locks a password or an entire EPC, TID, or User memory bank in a readable/writeable or unreadable/unwriteable state.
 Once tag’s password memory establishes to forever may be readable and writable or unreadable and unwriteable, then later cannot change its read-write protection again.
 Tag’s EPC memory, TID memory or user memory, if establishes to forever may be writeable or unwriteable, then later cannot change its read-write	protection again.
 If sends the command to want forcefully to change the above several states, then the tag will return to the error code.
@@ -136,9 +125,7 @@ func Lock(adr uint8, tag Tag, prt Protect, mask Mask) Res {
 	return res
 }
 
-/*BlockErase
-The command is used to erase multiple words in a Tag’s Password, EPC, TID, or User memory.
-*/
+//BlockErase The command is used to erase multiple words in a Tag’s Password, EPC, TID, or User memory.
 func BlockErase(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data := []uint8{tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -150,13 +137,7 @@ func BlockErase(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	return res
 }
 
-/*ReadProtect
-The command is used to set designated tag read protection.
-After the tag protected, it never process command.
-Even if inventory tag, reader can not get the EPC number.
-The read protection can be removed by executing Reset
-ReadProtect. Only NXP's UCODE EPC G2X tags valid.
-*/
+//ReadProtect The command is used to set designated tag read protection. After the tag protected, it never process command. Even if inventory tag, reader can not get the EPC number. The read protection can be removed by executing Reset ReadProtect. Only NXP's UCODE EPC G2X tags valid.
 func ReadProtect(adr uint8, tag Tag, mask Mask) Res {
 	data := []uint8{tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -167,11 +148,7 @@ func ReadProtect(adr uint8, tag Tag, mask Mask) Res {
 	return res
 }
 
-/*ReadProtect Without EPC
-The command is used to random set random one tag read protection in the effective field.
-The tag must be having the same access password.
-Only NXP's UCODE EPC G2X tags valid.
-*/
+//ReadProtectWithoutEPC The command is used to random set random one tag read protection in the effective field. The tag must be having the same access password. Only NXP's UCODE EPC G2X tags valid.
 func ReadProtectWithoutEPC(adr uint8, pwd []uint8) Res {
 	data := pwd
 	send(Req{adr: adr, cmd: readProtectWithoutEPC, data: data})
@@ -179,11 +156,7 @@ func ReadProtectWithoutEPC(adr uint8, pwd []uint8) Res {
 	return res
 }
 
-/*ResetReadProtect
-The command is used to remove only one tag read protection in the effective field.
-The tag must be having the same access password.
-Only NXP's UCODE EPC G2X tags valid.
-*/
+//ResetReadProtect The command is used to remove only one tag read protection in the effective field. The tag must be having the same access password. Only NXP's UCODE EPC G2X tags valid.
 func ResetReadProtect(adr uint8, pwd []uint8) Res {
 	data := pwd
 	send(Req{adr: adr, cmd: resetReadProtect, data: data})
@@ -191,10 +164,7 @@ func ResetReadProtect(adr uint8, pwd []uint8) Res {
 	return res
 }
 
-/*CheckReadProtect
-The command is used to check only one tag in the effective field, whether the tag is protected.
-It can not check the tag whether the tag support protection setting. Only NXP's UCODE EPC G2X tags valid.
-*/
+//CheckReadProtect The command is used to check only one tag in the effective field, whether the tag is protected. It can not check the tag whether the tag support protection setting. Only NXP's UCODE EPC G2X tags valid.
 func CheckReadProtect(adr uint8) (Res, bool) {
 	send(Req{adr: adr, cmd: checkReadProtect})
 	res := recv()
@@ -205,32 +175,21 @@ func CheckReadProtect(adr uint8) (Res, bool) {
 	return res, res.Data[ReadProtect] == unprotected
 }
 
-/*EASAlarm
-The function is used to set or reset the EAS status bit of designated tag.
-Only NXP's UCODE EPC G2X tags valid.
-*/
+//EASAlarm The function is used to set or reset the EAS status bit of designated tag. Only NXP's UCODE EPC G2X tags valid.
 func EASAlarm(adr uint8) Res {
 	send(Req{adr: adr, cmd: _EASAlarm})
 	res := recv()
 	return res
 }
 
-/*CheckEASAlarm
-The function is used to check EAS status bit of any tag in the effective field.
-Only NXP's UCODE EPC G2X tags valid.
-*/
+//CheckEASAlarm The function is used to check EAS status bit of any tag in the effective field. Only NXP's UCODE EPC G2X tags valid.
 func CheckEASAlarm(adr uint8) Res {
 	send(Req{adr: adr, cmd: checkEASAlarm})
 	res := recv()
 	return res
 }
 
-/*UserBlockLock
-The command is used to permanently lock the designated data in designated tag’s user memory.
-Block Lock command supports an additional locking mechanism, which allows the locking of individual 32 bit blocks (rows) in the 224 bit User Memory.
-Once locked these locks cannot be unlocked.
-Only NXP's UCODE EPC G2X tags valid.
-*/
+//UserBlockLock The command is used to permanently lock the designated data in designated tag’s user memory. Block Lock command supports an additional locking mechanism, which allows the locking of individual 32 bit blocks (rows) in the 224 bit User Memory. Once locked these locks cannot be unlocked. Only NXP's UCODE EPC G2X tags valid.
 func UserBlockLock(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data := []uint8{tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)
@@ -242,8 +201,7 @@ func UserBlockLock(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	return res
 }
 
-/*InventorySingle
- */
+//InventorySingle Inventory Single
 func InventorySingle(adr uint8) (Res, uint8, Memory) {
 	send(Req{adr: adr, cmd: inventorySingle})
 	res := recv()
@@ -258,9 +216,7 @@ func InventorySingle(adr uint8) (Res, uint8, Memory) {
 	return res, res.Data[Num], EPC
 }
 
-/*BlockWrite
-The command is used to write multiple words in a Tag’s Reserved, EPC, TID, or User memory.
-*/
+//BlockWrite The command is used to write multiple words in a Tag’s Reserved, EPC, TID, or User memory.
 func BlockWrite(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data := []uint8{spec.Mem.Len, tag.EPC.Len}
 	data = append(data, tag.EPC.Data...)

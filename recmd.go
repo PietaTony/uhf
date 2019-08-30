@@ -1,4 +1,4 @@
-package UHFRFID
+package reader
 
 const recmdMinSize = 5
 

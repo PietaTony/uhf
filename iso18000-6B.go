@@ -1,7 +1,6 @@
-package UHFRFID
+package reader
 
-/*InventorySignal6B
-The command is used to Inventory only one tag in the effective field and get their ID values.
+/*InventorySignal6B The command is used to Inventory only one tag in the effective field and get their ID values.
 If more than one tag in the effective field at the same time, reader may be get nothing.
 */
 func InventorySignal6B(adr uint8) (Res, UID) {
@@ -10,8 +9,7 @@ func InventorySignal6B(adr uint8) (Res, UID) {
 	return res, res.Data
 }
 
-/*InventoryMultiple6B
-The command is used to according to the given conditions Inventory tags in the effective field and get their ID values
+/*InventoryMultiple6B The command is used to according to the given conditions Inventory tags in the effective field and get their ID values
 Parameter Connect:
 	Condition: The condition of detecting tags.
 		0x00: equal condition.
@@ -39,8 +37,7 @@ func InventoryMultiple6B(adr uint8, condition uint8, dataAdr uint8, mask uint8, 
 	return res, UIDs
 }
 
-/*ReadData6B
-The command is used to start to read several bytes from the designated address.
+/*ReadData6B The command is used to start to read several bytes from the designated address.
 Parameter Connect:
 	Address: The tag’s start byte address to read. The range is 0~223. Otherwise, it returns the parameters error message.
 	Num: In byte units. It specifies the number of 8-bit bytes to be read. The value range is 1~32, and Address + Num must be less than 224. Otherwise, it returns the parameters error message.
@@ -55,8 +52,7 @@ func ReadData6B(adr uint8, dataAdr uint8, ID UID, num uint8) (Res, []uint8) {
 	return res, res.Data
 }
 
-/*WriteData6B
-The command is used to start to write several bytes from the designated address.
+/*WriteData6B The command is used to start to write several bytes from the designated address.
 Parameter Connect:
 	Address: The tag’s start byte address to write. The range is 8~223. Otherwise, it returns the parameters error message.
 	ID: 8 bytes, it is 6B tag’s UID. The low byte is fist.
@@ -71,8 +67,7 @@ func WriteData6B(adr uint8, dataAdr uint8, ID UID, wData []uint8) (Res, []uint8)
 	return res, res.Data
 }
 
-/*CheckLock6B
-The command is used to check whether the designated byte is locked.
+/*CheckLock6B The command is used to check whether the designated byte is locked.
 Parameter Connect:
 	Address: The tag’s byte address to check lock. The range is 0~223. Otherwise, it returns the parameters error message.
 	ID: 8 bytes, it is 6B tag’s UID. The low byte is fist.
@@ -89,9 +84,8 @@ func CheckLock6B(adr uint8, dataAdr uint8, ID UID) (Res, bool) {
 	return res, (res.Data[LockState] == Locked)
 }
 
-/*Lock6B
-The command is used to lock the designated byte.
-*/
+/*Lock6B The command is used to lock the designated byte.
+ */
 func Lock6B(adr uint8, dataAdr uint8, ID UID) Res {
 	data := []uint8{dataAdr}
 	data = append(data, ID...)

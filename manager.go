@@ -1,4 +1,4 @@
-package UHFRFID
+package reader
 
 import (
 	"fmt"
@@ -9,7 +9,10 @@ import (
 	"github.com/sigurn/crc16"
 )
 
+//Options Reader's serial options
 var Options serial.OpenOptions
+
+//Port Reader serial port
 var Port io.ReadWriteCloser
 
 const (
@@ -18,6 +21,7 @@ const (
 	minimumReadSize = 4
 )
 
+//Begin begin serial port.
 func Begin(portName string, baudRate uint) {
 	Options = serial.OpenOptions{
 		PortName:        portName,
@@ -33,6 +37,7 @@ func Begin(portName string, baudRate uint) {
 	}
 }
 
+//Close close serial port
 func Close() {
 	Port.Close()
 }
@@ -74,9 +79,9 @@ func getCRC16(data []uint8) (uint8, uint8) {
 func getByte(data uint8) string {
 	if data < 16 {
 		return fmt.Sprintf("0x0%X ", data)
-	} else {
-		return fmt.Sprintf("0x%X ", data)
 	}
+	return fmt.Sprintf("0x%X ", data)
+
 }
 
 func getBytes(data []uint8) string {
@@ -87,6 +92,7 @@ func getBytes(data []uint8) string {
 	return s
 }
 
+//GetStr get byte or bytes string
 func GetStr(data interface{}) string {
 	switch v := data.(type) {
 	case uint8:
@@ -98,6 +104,7 @@ func GetStr(data interface{}) string {
 	}
 }
 
+//PrintBytes print bytes data
 func PrintBytes(data []uint8) {
 	fmt.Print(GetStr(data))
 }

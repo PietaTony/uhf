@@ -1,4 +1,4 @@
-package UHFRFID
+package reader
 
 const cmdMinSize = 4
 
@@ -34,7 +34,7 @@ const (
 	setScanTime          = 0x25
 	setBaudRate          = 0x28
 	setPower             = 0x2F
-	acousto_opticControl = 0x33
+	acoustoOpticControl  = 0x33
 	setWiegand           = 0x34
 	setWorkMode          = 0x35
 	getWorkMode          = 0x36

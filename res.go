@@ -1,7 +1,8 @@
-package UHFRFID
+package reader
 
 import "errors"
 
+//Res response
 type Res struct {
 	Len    uint8
 	Adr    uint8
@@ -36,9 +37,9 @@ func (m *Res) initRes(buf []uint8) error {
 	MSB, LSB := getCRC16(m.getBytesWithoutCRC())
 	if MSB == m.Msb && LSB == m.Lsb {
 		return nil
-	} else {
-		return errors.New("CRC Error")
 	}
+	return errors.New("CRC Error")
+
 }
 
 func (m *Res) getBytesWithoutCRC() []uint8 {
@@ -46,12 +47,14 @@ func (m *Res) getBytesWithoutCRC() []uint8 {
 	return append(slice, m.Data...)
 }
 
+//GetBytes get response by bytes
 func (m *Res) GetBytes() []uint8 {
 	slice := m.getBytesWithoutCRC()
 	m.Msb, m.Lsb = getCRC16(slice)
 	return append(slice, m.Lsb, m.Msb)
 }
 
+//GetString get response by string
 func (m *Res) GetString() string {
 	s := "Response:" + "\n"
 	s += "\tAdr:\t" + string(GetStr(m.Adr)) + "\n"
