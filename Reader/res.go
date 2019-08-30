@@ -3,13 +3,13 @@ package UHFRFID
 import "errors"
 
 type Res struct {
-	len    uint8
-	adr    uint8
-	cmd    uint8
-	status uint8
-	data   []uint8
-	lsb    uint8
-	msb    uint8
+	Len    uint8
+	Adr    uint8
+	Cmd    uint8
+	Status uint8
+	Data   []uint8
+	Lsb    uint8
+	Msb    uint8
 }
 
 func (m *Res) initRes(buf []uint8) error {
@@ -24,17 +24,17 @@ func (m *Res) initRes(buf []uint8) error {
 		msbPos    = 1
 	)
 	n := len(buf)
-	m.len = buf[lenPos]
-	m.adr = buf[adrPos]
-	m.cmd = buf[cmdPos]
-	m.status = buf[statusPos]
+	m.Len = buf[lenPos]
+	m.Adr = buf[adrPos]
+	m.Cmd = buf[cmdPos]
+	m.Status = buf[statusPos]
 	if n > recmdMinSize+1 {
-		m.data = buf[dataPos : n-crcSize]
+		m.Data = buf[dataPos : n-crcSize]
 	}
-	m.lsb = buf[n-lsbPos]
-	m.msb = buf[n-msbPos]
+	m.Lsb = buf[n-lsbPos]
+	m.Msb = buf[n-msbPos]
 	MSB, LSB := getCRC16(m.getBytesWithoutCRC())
-	if MSB == m.msb && LSB == m.lsb {
+	if MSB == m.Msb && LSB == m.Lsb {
 		return nil
 	} else {
 		return errors.New("CRC Error")
@@ -42,23 +42,23 @@ func (m *Res) initRes(buf []uint8) error {
 }
 
 func (m *Res) getBytesWithoutCRC() []uint8 {
-	slice := []uint8{m.len, m.adr, m.cmd, m.status}
-	return append(slice, m.data...)
+	slice := []uint8{m.Len, m.Adr, m.Cmd, m.Status}
+	return append(slice, m.Data...)
 }
 
 func (m *Res) GetBytes() []uint8 {
 	slice := m.getBytesWithoutCRC()
-	m.msb, m.lsb = getCRC16(slice)
-	return append(slice, m.lsb, m.msb)
+	m.Msb, m.Lsb = getCRC16(slice)
+	return append(slice, m.Lsb, m.Msb)
 }
 
 func (m *Res) GetString() string {
 	s := "Response:" + "\n"
-	s += "\tAdr:\t" + string(GetStr(m.adr)) + "\n"
-	s += "\tCmd:\t" + getCmdStr(m.cmd) + "\n"
-	s += "\tStatus:\t" + getStatusStr(m.status) + "\n"
-	if len(m.data) > 0 {
-		s += "\tData:\t" + string(GetStr(m.data)) + "\n"
+	s += "\tAdr:\t" + string(GetStr(m.Adr)) + "\n"
+	s += "\tCmd:\t" + getCmdStr(m.Cmd) + "\n"
+	s += "\tStatus:\t" + getStatusStr(m.Status) + "\n"
+	if len(m.Data) > 0 {
+		s += "\tData:\t" + string(GetStr(m.Data)) + "\n"
 	}
 	s += "\tAll:\t" + GetStr(m.GetBytes()) + "\n"
 	return s

@@ -7,7 +7,7 @@ If more than one tag in the effective field at the same time, reader may be get 
 func InventorySignal6B(adr uint8) (Res, UID) {
 	send(Req{adr: adr, cmd: inventorySignal6B})
 	res := recv()
-	return res, res.data
+	return res, res.Data
 }
 
 /*InventoryMultiple6B
@@ -52,7 +52,7 @@ func ReadData6B(adr uint8, dataAdr uint8, ID UID, num uint8) (Res, []uint8) {
 	data = append(data, num)
 	send(Req{adr: adr, cmd: readData6B, data: data})
 	res := recv()
-	return res, res.data
+	return res, res.Data
 }
 
 /*WriteData6B
@@ -68,7 +68,7 @@ func WriteData6B(adr uint8, dataAdr uint8, ID UID, wData []uint8) (Res, []uint8)
 	data = append(data, wData...)
 	send(Req{adr: adr, cmd: writeData6B, data: data})
 	res := recv()
-	return res, res.data
+	return res, res.Data
 }
 
 /*CheckLock6B
@@ -86,7 +86,7 @@ func CheckLock6B(adr uint8, dataAdr uint8, ID UID) (Res, bool) {
 		LockState = 0
 		Locked    = 1
 	)
-	return res, (res.data[LockState] == Locked)
+	return res, (res.Data[LockState] == Locked)
 }
 
 /*Lock6B

@@ -11,7 +11,7 @@ func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory) {
 	data := []uint8{spec.Adr, TID.Len}
 	send(Req{adr: adr, cmd: inventory, data: data})
 	res := recv()
-	if res.len == recmdMinSize {
+	if res.Len == recmdMinSize {
 		var EPSs []Memory
 		return res, EPSs
 	}
@@ -20,14 +20,14 @@ func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory) {
 		Num    = 0
 		EPCPos = 1
 	)
-	EPCSize := int(res.data[Num])
+	EPCSize := int(res.Data[Num])
 	EPCs := make([]Memory, EPCSize)
 
 	n := EPCPos
 	for i := 0; i < int(EPCSize); i++ {
-		EPCs[i].Len = res.data[n]
+		EPCs[i].Len = res.Data[n]
 		n++
-		EPCs[i].Data = res.data[n : n+int(EPCs[i].Len)]
+		EPCs[i].Data = res.Data[n : n+int(EPCs[i].Len)]
 		n += int(EPCs[i].Len)
 	}
 
@@ -37,7 +37,7 @@ func InventoryAll(adr uint8) (Res, []Memory) {
 	data := []uint8{}
 	send(Req{adr: adr, cmd: inventory, data: data})
 	res := recv()
-	if res.len == recmdMinSize {
+	if res.Len == recmdMinSize {
 		var EPSs []Memory
 		return res, EPSs
 	}
@@ -46,14 +46,14 @@ func InventoryAll(adr uint8) (Res, []Memory) {
 		Num    = 0
 		EPCPos = 1
 	)
-	EPCSize := int(res.data[Num])
+	EPCSize := int(res.Data[Num])
 	EPCs := make([]Memory, EPCSize)
 
 	n := EPCPos
 	for i := 0; i < int(EPCSize); i++ {
-		EPCs[i].Len = res.data[n]
+		EPCs[i].Len = res.Data[n]
 		n++
-		EPCs[i].Data = res.data[n : n+int(EPCs[i].Len)]
+		EPCs[i].Data = res.Data[n : n+int(EPCs[i].Len)]
 		n += int(EPCs[i].Len)
 	}
 
@@ -72,7 +72,7 @@ func ReadData(adr uint8, tag Tag, spec Spec, mask Mask) (Res, []uint8) {
 	data = append(data, mask.Adr, mask.Len)
 	send(Req{adr: adr, cmd: readData, data: data})
 	res := recv()
-	return res, res.data
+	return res, res.Data
 }
 
 /*WriteData
@@ -202,7 +202,7 @@ func CheckReadProtect(adr uint8) (Res, bool) {
 		ReadProtect = 0
 		unprotected = 1
 	)
-	return res, res.data[ReadProtect] == unprotected
+	return res, res.Data[ReadProtect] == unprotected
 }
 
 /*EASAlarm
@@ -252,10 +252,10 @@ func InventorySingle(adr uint8) (Res, uint8, Memory) {
 		EPCPos = 1
 	)
 	EPC := Memory{
-		Len:  uint8(len(res.data[EPCPos:])),
-		Data: res.data[EPCPos:],
+		Len:  uint8(len(res.Data[EPCPos:])),
+		Data: res.Data[EPCPos:],
 	}
-	return res, res.data[Num], EPC
+	return res, res.Data[Num], EPC
 }
 
 /*BlockWrite

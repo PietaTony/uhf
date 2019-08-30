@@ -1,6 +1,8 @@
 package UHFRFID
 
 import (
+	"encoding/json"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -24,7 +26,12 @@ func TestInventoryAll(t *testing.T) {
 		//PrintBytes(ReadData(adr, tag, spec, mask))
 	*/
 	for i := 0; i < 5; i++ {
-		InventoryAll(adr)
+		res, _ := InventoryAll(adr)
+		a, err := json.Marshal(res)
+		if err != nil {
+			fmt.Println("error:", err)
+		}
+		fmt.Println(string(a))
 		time.Sleep(1000 * time.Millisecond)
 	}
 }

@@ -16,13 +16,13 @@ func GetReaderInformation(adr uint8) (Res, Reader) {
 		ScanTime = 7
 	)
 	reader := Reader{
-		Version:  res.data[Version:Type],
-		Type:     res.data[Type],
-		Tr_Type:  res.data[Tr_Type],
-		MaxFre:   res.data[MaxFre],
-		MinFre:   res.data[MinFre],
-		Pwr:      res.data[Pwr],
-		ScanTime: res.data[ScanTime],
+		Version:  res.Data[Version:Type],
+		Type:     res.Data[Type],
+		Tr_Type:  res.Data[Tr_Type],
+		MaxFre:   res.Data[MaxFre],
+		MinFre:   res.Data[MinFre],
+		Pwr:      res.Data[Pwr],
+		ScanTime: res.Data[ScanTime],
 	}
 	return res, reader
 }
@@ -136,15 +136,15 @@ func GetWorkMode(adr uint8) (Res, Reader) {
 		Accuracy         = 10
 		OffsetTime       = 11
 	)
-	workMode := []uint8{res.data[Read_mode], res.data[Mode_state], res.data[Mem_Inven], res.data[First_Adr], res.data[Word_Num], res.data[Word_Num]}
+	workMode := []uint8{res.Data[Read_mode], res.Data[Mode_state], res.Data[Mem_Inven], res.Data[First_Adr], res.Data[Word_Num], res.Data[Word_Num]}
 	reader := Reader{
-		Wg_mode:          res.data[Wg_mode],
-		Wg_Data_Inteval:  res.data[Wg_Data_Inteval],
-		Wg_Pulse_Width:   res.data[Wg_Pulse_Width],
-		Wg_Pulse_Inteval: res.data[Wg_Pulse_Inteval],
+		Wg_mode:          res.Data[Wg_mode],
+		Wg_Data_Inteval:  res.Data[Wg_Data_Inteval],
+		Wg_Pulse_Width:   res.Data[Wg_Pulse_Width],
+		Wg_Pulse_Inteval: res.Data[Wg_Pulse_Inteval],
 		WorkMode:         workMode,
-		Accuracy:         res.data[Accuracy],
-		OffsetTime:       res.data[OffsetTime],
+		Accuracy:         res.Data[Accuracy],
+		OffsetTime:       res.Data[OffsetTime],
 	}
 	return res, reader
 }
@@ -178,6 +178,6 @@ func TriggerOffset(adr uint8, reader Reader) (Res, Reader) {
 	send(Req{adr: adr, cmd: triggerOffset, data: data})
 	res := recv()
 	const TriggerTime = 0
-	reader.TriggerTime = res.data[TriggerTime]
+	reader.TriggerTime = res.Data[TriggerTime]
 	return res, reader
 }
