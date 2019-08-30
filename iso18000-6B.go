@@ -1,4 +1,4 @@
-package reader
+package uhf
 
 /*InventorySignal6B The command is used to Inventory only one tag in the effective field and get their ID values.
 If more than one tag in the effective field at the same time, reader may be get nothing.

@@ -1,4 +1,4 @@
-package reader
+package uhf
 
 /*Inventory The command function is used to inventory tags in the effective field and get their EPC or TID values. The reader executes an Inventory command and gets tag’s EPC before any other operation.
 The user may accord need to establish this command the first biggest running time (Inventory scan time), before the command enquires. The reader completes command execution in inventory ScanTime (not including host sending data time) except inventory command after receiving host command and returns the results.

@@ -1,4 +1,4 @@
-package reader
+package uhf
 
 //Req request
 type Req struct {

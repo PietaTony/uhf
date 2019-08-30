@@ -1,4 +1,4 @@
-package reader
+package uhf
 
 const recmdMinSize = 5
 

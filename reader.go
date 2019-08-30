@@ -1,4 +1,4 @@
-package reader
+package uhf
 
 //GetReaderInformation The host sends this command to get the reader’s information including reader’s address (Adr), firmware version, reader’s type (Type), supported protocol (TrType), reader power, work frequency, and InventoryScanTime value.
 func GetReaderInformation(adr uint8) (Res, Reader) {
