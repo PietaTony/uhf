@@ -8,7 +8,7 @@ import (
 )
 
 func TestInventoryAll(t *testing.T) {
-	Begin("/dev/tty.SLAB_USBtoUART", 57600)
+	Begin("/dev/tty.SLAB_USBtoUART", 5760)
 	defer Close()
 
 	adr := uint8(0x00)
