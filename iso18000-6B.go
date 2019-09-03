@@ -4,7 +4,7 @@ package uhf
 If more than one tag in the effective field at the same time, reader may be get nothing.
 */
 func InventorySignal6B(adr uint8) (Res, UID) {
-	send(Req{adr: adr, cmd: inventorySignal6B})
+	send(Req{adr: adr, cmd: CmdInventorySignal6B})
 	res := recv()
 	return res, res.Data
 }
@@ -23,7 +23,7 @@ Parameter Connect:
 func InventoryMultiple6B(adr uint8, condition uint8, dataAdr uint8, mask uint8, wordData []uint8) (Res, []UID) {
 	data := []uint8{condition, dataAdr, mask}
 	data = append(data, wordData...)
-	send(Req{adr: adr, cmd: inventoryMultiple6B, data: data})
+	send(Req{adr: adr, cmd: CmdInventoryMultiple6B, data: data})
 	res := recv()
 	const (
 		Num     = 0
@@ -47,7 +47,7 @@ func ReadData6B(adr uint8, dataAdr uint8, ID UID, num uint8) (Res, []uint8) {
 	data := []uint8{dataAdr}
 	data = append(data, ID...)
 	data = append(data, num)
-	send(Req{adr: adr, cmd: readData6B, data: data})
+	send(Req{adr: adr, cmd: CmdReadData6B, data: data})
 	res := recv()
 	return res, res.Data
 }
@@ -62,7 +62,7 @@ func WriteData6B(adr uint8, dataAdr uint8, ID UID, wData []uint8) (Res, []uint8)
 	data := []uint8{dataAdr}
 	data = append(data, ID...)
 	data = append(data, wData...)
-	send(Req{adr: adr, cmd: writeData6B, data: data})
+	send(Req{adr: adr, cmd: CmdWriteData6B, data: data})
 	res := recv()
 	return res, res.Data
 }
@@ -75,7 +75,7 @@ Parameter Connect:
 func CheckLock6B(adr uint8, dataAdr uint8, ID UID) (Res, bool) {
 	data := []uint8{dataAdr}
 	data = append(data, ID...)
-	send(Req{adr: adr, cmd: checkLock6B, data: data})
+	send(Req{adr: adr, cmd: CmdCheckLock6B, data: data})
 	res := recv()
 	const (
 		LockState = 0
@@ -89,7 +89,7 @@ func CheckLock6B(adr uint8, dataAdr uint8, ID UID) (Res, bool) {
 func Lock6B(adr uint8, dataAdr uint8, ID UID) Res {
 	data := []uint8{dataAdr}
 	data = append(data, ID...)
-	send(Req{adr: adr, cmd: lock6B, data: data})
+	send(Req{adr: adr, cmd: CmdLock6B, data: data})
 	res := recv()
 	return res
 }

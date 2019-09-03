@@ -66,3 +66,27 @@ func (m *Res) GetString() string {
 	s += "\tAll:\t" + GetStr(m.GetBytes()) + "\n"
 	return s
 }
+
+//ToMemoryAry res to memory ary
+func (m *Res) ToMemoryAry() (EPSs []Memory) {
+	if m.Len == recmdMinSize {
+		return EPSs
+	}
+
+	const (
+		Num    = 0
+		EPCPos = 1
+	)
+	EPCSize := int(m.Data[Num])
+	EPCs := make([]Memory, EPCSize)
+
+	n := EPCPos
+	for i := 0; i < int(EPCSize); i++ {
+		EPCs[i].Len = m.Data[n]
+		n++
+		EPCs[i].Data = m.Data[n : n+int(EPCs[i].Len)]
+		n += int(EPCs[i].Len)
+	}
+
+	return EPCs
+}

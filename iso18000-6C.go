@@ -8,7 +8,7 @@ If the inventory scan time establishes excessively short, possibly will inventor
 */
 func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory) {
 	data := []uint8{spec.Adr, TID.Len}
-	send(Req{adr: adr, cmd: inventory, data: data})
+	send(Req{adr: adr, cmd: CmdInventory, data: data})
 	res := recv()
 	if res.Len == recmdMinSize {
 		var EPSs []Memory
@@ -36,7 +36,7 @@ func Inventory(adr uint8, spec Spec, TID Memory) (Res, []Memory) {
 //InventoryAll The command function inventory to get their EPC or TID values. The reader executes an Inventory command and gets all tag’s EPC before any other operation.
 func InventoryAll(adr uint8) (Res, []Memory) {
 	data := []uint8{}
-	send(Req{adr: adr, cmd: inventory, data: data})
+	send(Req{adr: adr, cmd: CmdInventory, data: data})
 	res := recv()
 	if res.Len == recmdMinSize {
 		var EPSs []Memory
@@ -68,7 +68,7 @@ func ReadData(adr uint8, tag Tag, spec Spec, mask Mask) (Res, []uint8) {
 	data = append(data, spec.Name, spec.Adr, spec.Mem.Len)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: readData, data: data})
+	send(Req{adr: adr, cmd: CmdReadData, data: data})
 	res := recv()
 	return res, res.Data
 }
@@ -81,7 +81,7 @@ func WriteData(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data = append(data, spec.Mem.Data...)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: writeData, data: data})
+	send(Req{adr: adr, cmd: CmdWriteData, data: data})
 	res := recv()
 	return res
 }
@@ -91,7 +91,7 @@ func WriteEPC(adr uint8, pwd []uint8, spec Spec) Res {
 	data := []uint8{spec.Mem.Len}
 	data = append(data, pwd...)
 	data = append(data, spec.Mem.Data...)
-	send(Req{adr: adr, cmd: writeEPC, data: data})
+	send(Req{adr: adr, cmd: CmdWriteEPC, data: data})
 	res := recv()
 	return res
 }
@@ -102,7 +102,7 @@ func KillTag(adr uint8, tag Tag, mask Mask) Res {
 	data = append(data, tag.EPC.Data...)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: killTag, data: data})
+	send(Req{adr: adr, cmd: CmdKillTag, data: data})
 	res := recv()
 	return res
 }
@@ -120,7 +120,7 @@ func Lock(adr uint8, tag Tag, prt Protect, mask Mask) Res {
 	data = append(data, prt.Select, prt.SetProtect)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: lock, data: data})
+	send(Req{adr: adr, cmd: CmdLock, data: data})
 	res := recv()
 	return res
 }
@@ -132,7 +132,7 @@ func BlockErase(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data = append(data, spec.Name, spec.WordPtr, spec.Mem.Len)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: blockErase, data: data})
+	send(Req{adr: adr, cmd: CmdBlockErase, data: data})
 	res := recv()
 	return res
 }
@@ -143,7 +143,7 @@ func ReadProtect(adr uint8, tag Tag, mask Mask) Res {
 	data = append(data, tag.EPC.Data...)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: readProtect, data: data})
+	send(Req{adr: adr, cmd: CmdReadProtect, data: data})
 	res := recv()
 	return res
 }
@@ -151,7 +151,7 @@ func ReadProtect(adr uint8, tag Tag, mask Mask) Res {
 //ReadProtectWithoutEPC The command is used to random set random one tag read protection in the effective field. The tag must be having the same access password. Only NXP's UCODE EPC G2X tags valid.
 func ReadProtectWithoutEPC(adr uint8, pwd []uint8) Res {
 	data := pwd
-	send(Req{adr: adr, cmd: readProtectWithoutEPC, data: data})
+	send(Req{adr: adr, cmd: CmdReadProtectWithoutEPC, data: data})
 	res := recv()
 	return res
 }
@@ -159,14 +159,14 @@ func ReadProtectWithoutEPC(adr uint8, pwd []uint8) Res {
 //ResetReadProtect The command is used to remove only one tag read protection in the effective field. The tag must be having the same access password. Only NXP's UCODE EPC G2X tags valid.
 func ResetReadProtect(adr uint8, pwd []uint8) Res {
 	data := pwd
-	send(Req{adr: adr, cmd: resetReadProtect, data: data})
+	send(Req{adr: adr, cmd: CmdResetReadProtect, data: data})
 	res := recv()
 	return res
 }
 
 //CheckReadProtect The command is used to check only one tag in the effective field, whether the tag is protected. It can not check the tag whether the tag support protection setting. Only NXP's UCODE EPC G2X tags valid.
 func CheckReadProtect(adr uint8) (Res, bool) {
-	send(Req{adr: adr, cmd: checkReadProtect})
+	send(Req{adr: adr, cmd: CmdCheckReadProtect})
 	res := recv()
 	const (
 		ReadProtect = 0
@@ -177,14 +177,14 @@ func CheckReadProtect(adr uint8) (Res, bool) {
 
 //EASAlarm The function is used to set or reset the EAS status bit of designated tag. Only NXP's UCODE EPC G2X tags valid.
 func EASAlarm(adr uint8) Res {
-	send(Req{adr: adr, cmd: _EASAlarm})
+	send(Req{adr: adr, cmd: CmdEASAlarm})
 	res := recv()
 	return res
 }
 
 //CheckEASAlarm The function is used to check EAS status bit of any tag in the effective field. Only NXP's UCODE EPC G2X tags valid.
 func CheckEASAlarm(adr uint8) Res {
-	send(Req{adr: adr, cmd: checkEASAlarm})
+	send(Req{adr: adr, cmd: CmdCheckEASAlarm})
 	res := recv()
 	return res
 }
@@ -196,14 +196,14 @@ func UserBlockLock(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, spec.WordPtr) //Each EEPROM row can be addressed by either of the two related WordPointers: Either of two WordPointers can address one single User Memory row
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: userBlockLock, data: data})
+	send(Req{adr: adr, cmd: CmdUserBlockLock, data: data})
 	res := recv()
 	return res
 }
 
 //InventorySingle Inventory Single
 func InventorySingle(adr uint8) (Res, uint8, Memory) {
-	send(Req{adr: adr, cmd: inventorySingle})
+	send(Req{adr: adr, cmd: CmdInventorySingle})
 	res := recv()
 	const (
 		Num    = 0
@@ -224,7 +224,7 @@ func BlockWrite(adr uint8, tag Tag, spec Spec, mask Mask) Res {
 	data = append(data, spec.Mem.Data...)
 	data = append(data, tag.Pwd.Data...)
 	data = append(data, mask.Adr, mask.Len)
-	send(Req{adr: adr, cmd: blockWrite, data: data})
+	send(Req{adr: adr, cmd: CmdBlockWrite, data: data})
 	res := recv()
 	return res
 }

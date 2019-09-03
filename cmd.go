@@ -2,45 +2,46 @@ package uhf
 
 const cmdMinSize = 4
 
+//CMD
 const (
 	//ISO18000-6C CMD
-	inventory             = 0x01
-	readData              = 0x02
-	writeData             = 0x03
-	writeEPC              = 0x04
-	killTag               = 0x05
-	lock                  = 0x06
-	blockErase            = 0x07
-	readProtect           = 0x08
-	readProtectWithoutEPC = 0x09
-	resetReadProtect      = 0x0A
-	checkReadProtect      = 0x0B
-	_EASAlarm             = 0x0C
-	checkEASAlarm         = 0x0D
-	userBlockLock         = 0x0E
-	inventorySingle       = 0x0F
-	blockWrite            = 0x10
+	CmdInventory             = 0x01
+	CmdReadData              = 0x02
+	CmdWriteData             = 0x03
+	CmdWriteEPC              = 0x04
+	CmdKillTag               = 0x05
+	CmdLock                  = 0x06
+	CmdBlockErase            = 0x07
+	CmdReadProtect           = 0x08
+	CmdReadProtectWithoutEPC = 0x09
+	CmdResetReadProtect      = 0x0A
+	CmdCheckReadProtect      = 0x0B
+	CmdEASAlarm              = 0x0C
+	CmdCheckEASAlarm         = 0x0D
+	CmdUserBlockLock         = 0x0E
+	CmdInventorySingle       = 0x0F
+	CmdBlockWrite            = 0x10
 	//ISO18000-6B CMD
-	inventorySignal6B   = 0x50
-	inventoryMultiple6B = 0x51
-	readData6B          = 0x52
-	writeData6B         = 0x53
-	checkLock6B         = 0x54
-	lock6B              = 0x55
+	CmdInventorySignal6B   = 0x50
+	CmdInventoryMultiple6B = 0x51
+	CmdReadData6B          = 0x52
+	CmdWriteData6B         = 0x53
+	CmdCheckLock6B         = 0x54
+	CmdLock6B              = 0x55
 	//Reader Defined CMD
-	getReaderInformation = 0x21
-	setRegion            = 0x22
-	setAddress           = 0x24
-	setScanTime          = 0x25
-	setBaudRate          = 0x28
-	setPower             = 0x2F
-	acoustoOpticControl  = 0x33
-	setWiegand           = 0x34
-	setWorkMode          = 0x35
-	getWorkMode          = 0x36
-	setEasAccuracy       = 0x37
-	syrisResponseOffset  = 0x38
-	triggerOffset        = 0x3B
+	CmdGetReaderInformation = 0x21
+	CmdSetRegion            = 0x22
+	CmdSetAddress           = 0x24
+	CmdSetScanTime          = 0x25
+	CmdSetBaudRate          = 0x28
+	CmdSetPower             = 0x2F
+	CmdAcoustoOpticControl  = 0x33
+	CmdSetWiegand           = 0x34
+	CmdSetWorkMode          = 0x35
+	CmdGetWorkMode          = 0x36
+	CmdSetEasAccuracy       = 0x37
+	CmdSyrisResponseOffset  = 0x38
+	CmdTriggerOffset        = 0x3B
 )
 
 func getCmdStr(cmd uint8) string {
